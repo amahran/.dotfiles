@@ -5,3 +5,8 @@ eval "$(pyenv init -)"
 
 # Created by `pipx` on 2023-08-28 17:25:47
 export PATH="$PATH:/home/thealchemist/.local/bin"
+
+
+# tmux sessionizer shortcut
+export PATH="$PATH:$HOME/.local/scripts"
+bindkey -s ^f "tmux-sessionizer\n"
