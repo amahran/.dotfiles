@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Credit: https://bacardi55.io/2023/07/10/new-laptop-part-6-managing-multi-screens-with-i3wm-and-autorandr/
+
+# Define an associative array:
+typeset -A mode
+# And its content:
+mode=(
+  [PredatorPlusLaptop]="autorandr --load predator-right"
+  [Laptop]="autorandr --load mobile"
+  [Cancel]=""
+)
+
+mode_nrows=${#mode[@]}
+
+selected="$(printf '%s\n' "${!mode[@]}" | sort | rofi -dmenu -p "Monitor setup" -i -lines 2)"
+i3-msg -q "exec --no-startup-id ${mode[${selected}]}"
