@@ -248,3 +248,6 @@ exec obsidian
 # Hint: use xprop to find out the class name of an application
 assign [class="firefox"] $ws1
 assign [class="obsidian"] $ws6
+
+## Screenshots
+bindsym $mod+p exec --no-startup-id maim --select "/home/$USER/Pictures/Screenshot-$(date '+%d-%m-%Y-%H-%M-%S').png"
