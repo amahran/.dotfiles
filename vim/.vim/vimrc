@@ -1,0 +1,101 @@
+"""" Plugin manager and plugins
+" install vim-plug automatically if it's not there
+" see: https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -flo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd vimenter * pluginstall --sync | source $myvimrc
+endif
+
+" Automatically install any missing plugins at startup
+" Install vim-plug if not found
+" See: https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -flo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" run pluginstall if there are missing plugins
+autocmd vimenter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| pluginstall --sync | source $myvimrc
+\| endif
+
+" install plugins in .vim/bundle
+call plug#begin('~/.vim/bundle')
+" Commentary plugin
+"    basic operation:
+" 	gc{motion} to comment/uncomment
+"    :h commentary
+" Note: this plugin adds a custom operator to vim
+Plug 'tpope/vim-commentary'
+" textobj entire plugin
+"    basic operation:
+"       {operator/command}ae. e.g. vae: select all file `ggVG', =ae: ident the
+"       whole file
+"    :h textobj-entire
+" Note: this plugin add a custom motion to vim
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-entire'
+" rose pine color scheme
+Plug 'rose-pine/vim'
+call plug#end()
+
+
+"""" Set vim options
+" set highligh search
+set hlsearch
+" set tab width to 4
+set tabstop=4
+" insert spaces instead of tab
+set expandtab
+" ident (> & <) using 4 spaces
+set shiftwidth=4
+" backspace deletes 4 empty characters
+set softtabstop=4
+" show line numbers
+set number
+" show relative line numbers
+set relativenumber
+" disable the beep
+set visualbell
+set t_vb=
+" autocompletion for command mode - zsh style
+set wildmenu
+set wildmode=full
+" increase history size, default is 20
+set history=200
+" enable hidden files (move while there is a change that has not
+" been written)
+set hidden
+" enable mouse
+" set mouse=nvi
+" enable increamental search 
+set incsearch
+
+"""" Key maps
+" map a key to mute search highlighting
+" c-u: clears any existing command line input
+" c-l: refresh the display
+nnoremap <silent> <c-l> :<c-u>nohlsearch<cr><c-l>
+" cycle through the open buffer list
+" TODO: Those keymaps and more can be found in
+" tim pope plugin https://github.com/tpope/vim-unimpaired
+nnoremap <silent> [b :previous<CR>
+nnoremap <silent> ]b :next<CR>
+nnoremap <silent> [B :first<CR>
+nnoremap <silent> ]B :last<CR>
+" expands the path of the active buffer with %% keymap in command  
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+" disable the arrow keys in normal mode (learn by force)
+nnoremap <Up> <Nop>
+nnoremap <Down> <Nop>
+nnoremap <Left> <Nop>
+nnoremap <Right> <Nop>
+" change the leader key from the default /
+let mapleader=","
+nnoremap \ ,
+
+" color scheme
+set background=dark
+colorscheme rosepine
+
