@@ -38,8 +38,11 @@ Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-entire'
 " rose pine color scheme
 Plug 'rose-pine/vim'
+Plug 'tpope/vim-surround'
 call plug#end()
 
+" Add vim built in plugins
+packadd! matchit
 
 """" Set vim options
 " set highligh search
@@ -80,10 +83,10 @@ nnoremap <silent> <c-l> :<c-u>nohlsearch<cr><c-l>
 " cycle through the open buffer list
 " TODO: Those keymaps and more can be found in
 " tim pope plugin https://github.com/tpope/vim-unimpaired
-nnoremap <silent> [b :previous<CR>
-nnoremap <silent> ]b :next<CR>
-nnoremap <silent> [B :first<CR>
-nnoremap <silent> ]B :last<CR>
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> [B :bfirst<CR>
+nnoremap <silent> ]B :blast<CR>
 " expands the path of the active buffer with %% keymap in command  
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 " disable the arrow keys in normal mode (learn by force)
@@ -91,9 +94,11 @@ nnoremap <Up> <Nop>
 nnoremap <Down> <Nop>
 nnoremap <Left> <Nop>
 nnoremap <Right> <Nop>
+
 " change the leader key from the default /
-let mapleader=","
-nnoremap \ ,
+let mapleader=" "
+" project view
+nnoremap <leader>pv :Ex<CR>    
 
 " color scheme
 set background=dark

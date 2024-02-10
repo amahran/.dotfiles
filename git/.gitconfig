@@ -3,3 +3,7 @@
 [user]
 	email = amahran@users.noreply.github.com
 	name = amahran
+[core]
+	editor = nvim
+[diff]
+	tool = nvimdiff
