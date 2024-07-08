@@ -1,0 +1,9 @@
+# tmux sessionizer shortcut
+if [[ ":$PATH:" != *":$HOME/.local/scripts:"* ]]; then
+    export PATH="$PATH:$HOME/.local/scripts"
+fi
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+    export PATH="$PATH:$HOME/.local/bin"
+fi
+bindkey -s ^f "tmux-sessionizer\n"
+
