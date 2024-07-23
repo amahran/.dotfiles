@@ -232,13 +232,13 @@ bindsym $mod+Shift+x exec --no-startup-id i3lock -i ~/Pictures/lockscreen.png
 bindsym $mod+Shift+s exec --no-startup-id systemctl suspend
 
 # Open browser
-bindsym $mod+Shift+b exec --no-startup-id org.mozilla.firefox -P
+bindsym $mod+Shift+b exec --no-startup-id firefox -P
 
 # set a custom wallpaper every time i3 is (re)started
-exec_always --no-startup-id feh --bg-scale ~/Pictures/wallpaper.jpeg
+exec_always --no-startup-id feh --bg-scale ~/wallpaper/wallpaper.png
 
 # open firefox on login
-exec org.mozilla.firefox
+exec firefox
 exec obsidian
 # open applications on specific workspaces
 # Hint: use xprop to find out the class name of an application
