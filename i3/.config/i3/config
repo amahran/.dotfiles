@@ -60,7 +60,7 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -238,8 +238,10 @@ bindsym $mod+Shift+b exec --no-startup-id firefox -P
 exec_always --no-startup-id feh --bg-scale ~/wallpaper/wallpaper.png
 
 # open firefox on login
-exec firefox
-exec obsidian
+exec --no-startup-id firefox -P
+exec --no-startup-id obsidian
+exec --no-startup-id i3-msg 'workspace 2; exec kitty'
+
 # open applications on specific workspaces
 # Hint: use xprop to find out the class name of an application
 assign [class="firefox"] $ws1
