@@ -11,8 +11,8 @@ general {
         interval = 5
 }
 
+order += "ethernet enp0s31f6"
 order += "disk /"
-order += "battery all"
 order += "load"
 order += "tztime local"
 order += "volume master"
@@ -38,4 +38,8 @@ volume master {
         device = "default"
         mixer = "Master"
         mixer_idx = 0
+}
+ethernet enp0s31f6 {
+        format_up = "E: %ip (%speed)"
+        format_down = "E: down"
 }

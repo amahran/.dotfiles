@@ -238,14 +238,10 @@ bindsym $mod+Shift+b exec --no-startup-id firefox -P
 exec_always --no-startup-id feh --bg-scale ~/wallpaper/wallpaper.png
 
 # open firefox on login
-exec --no-startup-id firefox -P
-exec --no-startup-id obsidian
-exec --no-startup-id i3-msg 'workspace 2; exec kitty'
-
-# open applications on specific workspaces
-# Hint: use xprop to find out the class name of an application
-assign [class="firefox"] $ws1
-assign [class="obsidian"] $ws6
+for_window [class="obsidian"] move to workspace 6
+exec --no-startup-id i3-msg 'workspace 1; exec firefox -P'
+exec --no-startup-id i3-msg 'workspace 3; exec kitty'
+exec --no-startup-id i3-msg 'workspace 6; exec obsidian'
 
 ## Screenshots
 bindsym $mod+p exec --no-startup-id maim --select "/home/$USER/Pictures/Screenshot-$(date '+%d-%m-%Y-%H-%M-%S').png"
