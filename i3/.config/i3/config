@@ -60,7 +60,7 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec kitty
+bindsym $super+Return exec kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -242,6 +242,9 @@ for_window [class="obsidian"] move to workspace 6
 exec --no-startup-id i3-msg 'workspace 1; exec firefox -P'
 exec --no-startup-id i3-msg 'workspace 3; exec kitty'
 exec --no-startup-id i3-msg 'workspace 6; exec obsidian'
+
+# applications that should always be in floating mode
+for_window [class="gnome-calculator"] floating enable
 
 ## Screenshots
 bindsym $mod+p exec --no-startup-id maim --select "/home/$USER/Pictures/Screenshot-$(date '+%d-%m-%Y-%H-%M-%S').png"

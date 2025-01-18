@@ -7,3 +7,5 @@
 	editor = nvim
 [diff]
 	tool = nvimdiff
+[color]
+	ui = auto
