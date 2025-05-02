@@ -36,6 +36,10 @@ for_window [class="^.*"] client.focused          #77dd77 #285577 #ffffff #2e9ef4
 exec --no-startup-id dex --autostart --environment i3
 # start X11 compositor: picom
 exec --no-startup-id picom
+# start up keyring daemon for secure credential storage (required by tools like vscode)
+exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY XAUTHORITY WAYLAND_DISPLAY
+exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets,pkcs11,ssh
+
 
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
@@ -66,9 +70,11 @@ bindsym $super+Return exec kitty
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu_run
+# bindsym $mod+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
-# bindcode $mod+40 exec "rofi -modi drun,run -show drun"
+bindsym $mod+d exec "rofi -modi drun,run -show drun"
+# bindsym $mod+d exec --no-startup-id \
+#     rofi -show drun -theme ~/.config/rofi/config.rasi
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
@@ -232,16 +238,16 @@ bindsym $mod+Shift+x exec --no-startup-id i3lock -i ~/Pictures/lockscreen.png
 bindsym $mod+Shift+s exec --no-startup-id systemctl suspend
 
 # Open browser
-bindsym $mod+Shift+b exec --no-startup-id firefox -P
+bindsym $mod+Shift+b exec --no-startup-id google-chrome-stable
 
 # set a custom wallpaper every time i3 is (re)started
 exec_always --no-startup-id feh --bg-scale ~/wallpaper/wallpaper.png
 
 # open firefox on login
-for_window [class="obsidian"] move to workspace 6
-exec --no-startup-id i3-msg 'workspace 1; exec firefox -P'
+# for_window [class="obsidian"] move to workspace 6
+exec --no-startup-id i3-msg 'workspace 1; exec google-chrome-stable'
 exec --no-startup-id i3-msg 'workspace 3; exec kitty'
-exec --no-startup-id i3-msg 'workspace 6; exec obsidian'
+# exec --no-startup-id i3-msg 'workspace 6; exec obsidian'
 
 # applications that should always be in floating mode
 for_window [class="gnome-calculator"] floating enable
