@@ -1,18 +1,16 @@
 * {
-  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-family: "FiraMono Nerd Font";
   font-size: 14px;
-  padding: 0 2px;
   color: #ffffff;
+  font-weight: bold;
 }
 
 window#waybar {
   background-color: rgba(0, 0, 0, 0.8);
-  border-bottom: 1px solid #444;
 }
 
 #workspaces button {
-  padding: 0 5px;
-  margin: 0 2px;
+  padding: 0 4px;
   background: transparent;
   border: none;
   color: #aaa;
@@ -21,10 +19,10 @@ window#waybar {
 #workspaces button.active {
   background-color: #444;
   color: #fff;
-  border-radius: 4px;
 }
 
-#cpu, #memory, #battery, #clock {
+#cpu, #network, #memory, #battery, #clock {
   margin: 0 5px;
+  padding: 0 6px;
 }
 

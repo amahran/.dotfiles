@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
-pushd $DOTFILES
-for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
+
+# Set default values if not already set
+STOW_FOLDERS="${STOW_FOLDERS:-zsh,git,bin,git,i3,tmux,nvim,picom,kitty,hyprland}"
+DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
+
+# Move into the dotfiles directory
+pushd "$DOTFILES" > /dev/null
+
+# Loop through each folder and apply stow
+for folder in $(echo "$STOW_FOLDERS" | tr ',' ' ')
 do
   echo "stow $folder"
-  stow -D $folder
-  stow $folder
+  stow -D "$folder"
+  stow "$folder"
 done
-popd
+
+# Return to previous directory
+popd > /dev/null
+
