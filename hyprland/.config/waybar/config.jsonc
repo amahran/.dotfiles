@@ -35,8 +35,8 @@
   },
   "clock": {
     "timezone": "Germany/Berlin",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format": "{:%d.%m.%Y - %H:%M:%S}"
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar:week_start_monday}</small></tt>",
+    "format": "{:%d.%m.%Y - %H:%M}"
   },
   "network": {
     "format-wifi": "󰤢 ",
