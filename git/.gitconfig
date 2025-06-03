@@ -3,6 +3,8 @@
 [user]
 	email = amahran@users.noreply.github.com
 	name = amahran
+[includeIf "gitdir:~/work/"]
+    path = ~/.gitconfig-work
 [core]
 	editor = nvim
 [diff]
