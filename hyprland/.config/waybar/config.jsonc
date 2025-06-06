@@ -12,6 +12,7 @@
     "memory",
     "tray",
     "custom/lock",
+    "power-profiles-daemon"
   ],
   "hyprland/workspaces": {
     "format": "{name}: {icon}",
@@ -34,8 +35,8 @@
     "max-length": 50
   },
   "clock": {
-    "timezone": "Germany/Berlin",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar:week_start_monday}</small></tt>",
+    "timezone": "Europe/Berlin",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "format": "{:%d.%m.%Y - %H:%M}"
   },
   "network": {
@@ -66,6 +67,16 @@
     "tooltip": false,
     "on-click": "sh -c '(sleep 0.5s; hyprlock)' & disown",
     "format": ""
+  },
+  "power-profiles-daemon": {
+    "format": "{icon}  ",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "performance": "",
+      "balanced": "",
+      "power-saver": ""
+    }
   }
 }
 

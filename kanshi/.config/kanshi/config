@@ -1,0 +1,19 @@
+profile docked {
+    output eDP-1 disable
+    output DP-4 enable scale 1.5
+}
+
+profile docked {
+    output eDP-1 disable
+    output DP-5 enable scale 1.25
+}
+
+profile docked {
+    output eDP-1 disable
+    output DP-6 enable scale 1.25
+}
+
+profile undocked {
+    output eDP-1 enable scale 1
+}
+
