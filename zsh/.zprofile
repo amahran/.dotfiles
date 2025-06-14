@@ -16,4 +16,4 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-
+export TASKING_TRICORE_PATH=/opt/TriCore/ctc/bin
