@@ -46,6 +46,7 @@
 #cpu,
 #memory,
 #custom-lock,
+#power-profiles-daemon,
 #custom-power {
   background-color: #101010;
   padding: 0.0rem 1rem;
