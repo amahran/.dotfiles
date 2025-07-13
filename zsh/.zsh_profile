@@ -7,3 +7,11 @@ if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
 fi
 bindkey -s ^f "tmux-sessionizer\n"
 
+# Function to open your TODO directory in vim
+todo() {
+  local file=$(find ~/work/todo ~/personal/todo -type f | fzf)
+  [ -n "$file" ] && nvim "$file"
+}
+
+bindkey -s ^e "todo\n"
+
