@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Set default values if not already set
-STOW_FOLDERS="${STOW_FOLDERS:-zsh,git,bin,git,i3,tmux,nvim,picom,kitty,hyprland,zathura}"
+STOW_FOLDERS="${STOW_FOLDERS:-zsh,git,bin,git,i3,tmux,nvim,picom,kitty,hyprland,zathura,kanshi}"
 DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
 
 # Move into the dotfiles directory
