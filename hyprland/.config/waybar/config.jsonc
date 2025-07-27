@@ -5,9 +5,9 @@
   "modules-center": ["clock"],
   "modules-right": [
     "pulseaudio",
-    "backlight",
+    // "backlight",
     "battery",
-    "network",
+    // "network",
     "cpu",
     "memory",
     "tray",

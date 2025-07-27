@@ -39,7 +39,8 @@ exec --no-startup-id picom
 # start up keyring daemon for secure credential storage (required by tools like vscode)
 exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY XAUTHORITY WAYLAND_DISPLAY
 exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets,pkcs11,ssh
-
+# autorandr - autodetect previosuly saved profiles based on connected monitors
+exec --no-startup-id autorandr --change --force
 
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
@@ -47,7 +48,7 @@ exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets,
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -c 000000
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -60,14 +61,19 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
+# Apps
+set $terminal kitty
+set $browser google-chrome-stable
+set $fileManager nautilus
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $super+Return exec kitty
+bindsym $mod+BackSpace exec $terminal
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+c kill
 
 # start dmenu (a program launcher)
 # bindsym $mod+d exec --no-startup-id dmenu_run
@@ -101,15 +107,15 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+# bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+s layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+Shift+f focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -185,7 +191,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+m exec "i3-msg exit"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -227,30 +233,31 @@ bar {
 # note: variables can't be used across include files
 include monitor.conf
 
-exec_always xrandr --output DP-1 --auto --scale 1x1
+# exec_always xrandr --output DP-4 --auto --scale 1x1
 
 # Graphically switch between saved moniors setup with autorandr and rofi
-bindsym $super+Shift+space exec --no-startup-id ~/.config/i3/monitor
+bindsym $mod+Shift+d exec --no-startup-id ~/.config/i3/monitor
 
 # lock screen
-bindsym $mod+Shift+x exec --no-startup-id i3lock -i ~/Pictures/lockscreen.png
+bindsym $super+l exec --no-startup-id i3lock -c 000000
 # suspend
 bindsym $mod+Shift+s exec --no-startup-id systemctl suspend
 
 # Open browser
-bindsym $mod+Shift+b exec --no-startup-id google-chrome-stable
+bindsym $mod+b exec --no-startup-id $browser
+bindsym $mod+e exec --no-startup-id $fileManager
 
 # set a custom wallpaper every time i3 is (re)started
-exec_always --no-startup-id feh --bg-scale ~/wallpaper/wallpaper.png
+exec_always --no-startup-id feh --bg-scale ~/wallpaper/wallhaven-3qk1xd.png
 
-# open firefox on login
+# open apps at login
 # for_window [class="obsidian"] move to workspace 6
-exec --no-startup-id i3-msg 'workspace 1; exec google-chrome-stable'
-exec --no-startup-id i3-msg 'workspace 3; exec kitty'
+exec --no-startup-id i3-msg 'workspace 3; exec $terminal'
+exec --no-startup-id i3-msg 'workspace 1; exec $browser'
 # exec --no-startup-id i3-msg 'workspace 6; exec obsidian'
 
 # applications that should always be in floating mode
 for_window [class="gnome-calculator"] floating enable
 
 ## Screenshots
-bindsym $mod+p exec --no-startup-id maim --select "/home/$USER/Pictures/Screenshot-$(date '+%d-%m-%Y-%H-%M-%S').png"
+bindsym $mod+p exec --no-startup-id flameshot full
