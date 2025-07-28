@@ -15,6 +15,8 @@ set $mod Mod1
 # set variable for super key
 set $super Mod4
 
+set $wallpaper "$HOME/wallpaper/wallhaven-3qk1xd.png"
+
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font xft:Noto Sans 15px
@@ -31,16 +33,19 @@ for_window [class="^.*"] client.focused          #77dd77 #285577 #ffffff #2e9ef4
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 
+# stop the stupid spinning cursor at login in empty workspaces
+exec_always --no-startup-id xsetroot -cursor_name left_ptr
+
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
+# notification daemon
+exec --no-startup-id dunst
 # start X11 compositor: picom
 exec --no-startup-id picom
 # start up keyring daemon for secure credential storage (required by tools like vscode)
 exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY XAUTHORITY WAYLAND_DISPLAY
 exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets,pkcs11,ssh
-# autorandr - autodetect previosuly saved profiles based on connected monitors
-exec --no-startup-id autorandr --change --force
 
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
@@ -48,7 +53,7 @@ exec --no-startup-id autorandr --change --force
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -c 000000
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -c 000000 -t -i $wallpaper
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -190,8 +195,6 @@ bindsym $super+Shift+9 move container to workspace number $ws19
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+m exec "i3-msg exit"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -231,29 +234,42 @@ bar {
 #------------------------
 
 # note: variables can't be used across include files
-include monitor.conf
+# include monitor.conf
 
 # exec_always xrandr --output DP-4 --auto --scale 1x1
 
 # Graphically switch between saved moniors setup with autorandr and rofi
-bindsym $mod+Shift+d exec --no-startup-id ~/.config/i3/monitor
+# bindsym $mod+Shift+d exec --no-startup-id ~/.config/i3/monitor
 
 # lock screen
-bindsym $super+l exec --no-startup-id i3lock -c 000000
-# suspend
-bindsym $mod+Shift+s exec --no-startup-id systemctl suspend
+bindsym $super+l exec --no-startup-id i3lock -n -t -i $wallpaper
+set $mode_system System (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+m mode "$mode_system"
+
 
 # Open browser
 bindsym $mod+b exec --no-startup-id $browser
 bindsym $mod+e exec --no-startup-id $fileManager
 
 # set a custom wallpaper every time i3 is (re)started
-exec_always --no-startup-id feh --bg-scale ~/wallpaper/wallhaven-3qk1xd.png
-
+# autorandr - autodetect previosuly saved profiles based on connected monitors
+exec_always --no-startup-id sh -c 'autorandr --change --force; sleep 0.5; feh --bg-scale $wallpaper'
 # open apps at login
 # for_window [class="obsidian"] move to workspace 6
-exec --no-startup-id i3-msg 'workspace 3; exec $terminal'
-exec --no-startup-id i3-msg 'workspace 1; exec $browser'
+exec --no-startup-id i3-msg 'workspace 1; exec $browser; workspace 1'
+exec --no-startup-id i3-msg 'workspace 3; exec $terminal; workspace 1'
 # exec --no-startup-id i3-msg 'workspace 6; exec obsidian'
 
 # applications that should always be in floating mode
