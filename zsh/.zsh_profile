@@ -13,5 +13,5 @@ todo() {
   [ -n "$file" ] && nvim "$file"
 }
 
-bindkey -s ^e "todo\n"
-
+# alt + e to open todo
+bindkey -s '\ee' "todo\n"
