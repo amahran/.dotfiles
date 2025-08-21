@@ -17,3 +17,4 @@ function y() {
 }
 
 export TASKING_TRICORE_PATH=/opt/TriCore/ctc/bin
+eval "$(zoxide init zsh)"

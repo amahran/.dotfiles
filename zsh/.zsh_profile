@@ -15,3 +15,8 @@ todo() {
 
 # alt + e to open todo
 bindkey -s '\ee' "todo\n"
+
+# alias
+# use zoxide instead of cd
+alias cd=z
+alias cdi=zi
