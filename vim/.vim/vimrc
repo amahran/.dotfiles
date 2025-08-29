@@ -37,7 +37,8 @@ Plug 'tpope/vim-commentary'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-entire'
 " rose pine color scheme
-Plug 'rose-pine/vim'
+" Plug 'rose-pine/vim'
+Plug 'menisadi/kanagawa.vim'
 Plug 'tpope/vim-surround'
 call plug#end()
 
@@ -102,5 +103,6 @@ nnoremap <leader>pv :Ex<CR>
 
 " color scheme
 set background=dark
-colorscheme rosepine
+set termguicolors
+colorscheme kanagawa
 

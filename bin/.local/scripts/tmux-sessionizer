@@ -1,31 +1,34 @@
 #!/usr/bin/env bash
 
+# Pick directory (or accept as arg)
 if [[ $# -eq 1 ]]; then
-    selected=$1
+  selected=$1
 else
-    selected=$(fd . ~/ ~/work ~/personal --min-depth=1 --max-depth=3 --type d -H -a | fzf)
-    selected="${selected%/}" # remote the trailing /, somehow doesn't play nice with oh-my-zsh
+  selected=$({
+      fd . ~/ ~/personal --min-depth=1 --max-depth=1 --type d -H -a -E .git -E build 
+      fd . ~/work --min-depth=1 --max-depth=3 --type d -H -a -E .git -E build 
+  } | fzf)
 fi
 
-if [[ -z $selected ]]; then
-    exit 0
+# Normalize & validate
+selected="${selected%/}"                # drop trailing /
+[[ -z "${selected:-}" ]] && exit 0
+
+# Derive a safe tmux session name
+selected_name=$(basename "$selected")
+selected_name=${selected_name//./}      # remove dots
+selected_name=${selected_name//:/-}     # replace colons (tmux delimiter)
+
+# Ensure session exists (create detached if missing, starting in the target dir)
+if ! tmux has-session -t="$selected_name" 2>/dev/null; then
+  tmux new-session -ds "$selected_name" -c "$selected"
 fi
 
-selected_name=$(basename "$selected" | tr -d .)
-tmux_running=$(pgrep tmux)
-
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-    tmux new-session -s $selected_name -c $selected
-    exit 0
-fi
-
-if ! tmux has-session -t=$selected_name 2> /dev/null; then
-    tmux new-session -ds $selected_name -c $selected
-fi
-
-if [[ -z $tmux_running ]]; then
-    tmux switch-client -t $selected_name
+# Inside tmux: switch client. Outside tmux: attach to session.
+if [[ -n "${TMUX:-}" ]]; then
+  tmux switch-client -t "$selected_name"
 else
-    tmux attach -t $selected_name
+  # -A will attach if it exists, or create if it was deleted in the tiny race window.
+  tmux new-session -A -s "$selected_name" -c "$selected"
 fi
 
