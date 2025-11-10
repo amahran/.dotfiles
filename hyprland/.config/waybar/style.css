@@ -1,9 +1,9 @@
 * {
   font-family: JetbrainsMono Nerd Font;
-  font-size: 14px;
+  font-size: 11px;
   min-height: 0;
-  padding-right: 2px;
-  padding-left: 2px;
+  padding-right: 0px;
+  padding-left: 0px;
   padding-bottom: 0px;
 }
 
@@ -14,7 +14,7 @@
 }
 
 #workspaces {
-  border-radius: 5px;
+  border-radius: 2px;
   margin: 2px;
   background: #101010;
   margin-left: 1rem;
