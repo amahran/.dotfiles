@@ -53,7 +53,7 @@ exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets,
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -c 000000 -t -i $wallpaper
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-wallpaper
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -244,7 +244,7 @@ bar {
 # bindsym $super+Shift+d exec --no-startup-id ~/.config/i3/monitor
 
 # lock screen
-bindsym $mod+l exec --no-startup-id i3lock -n -t -i $wallpaper
+bindsym $mod+l exec --no-startup-id i3lock-wallpaper
 set $mode_system System (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
@@ -266,9 +266,10 @@ bindsym $super+b exec --no-startup-id $browser
 bindsym $super+e exec --no-startup-id $fileManager
 bindsym $super+i exec --no-startup-id gnome-calculator
 
-# set a custom wallpaper every time i3 is (re)started
-# autorandr - autodetect previosuly saved profiles based on connected monitors
-exec_always --no-startup-id sh -c 'autorandr --change --force; sleep 1; feh --bg-scale $wallpaper'
+# autorandr - autodetect previously saved profiles based on connected monitors.
+# The wallpaper is set by autorandr's postswitch hook (~/.config/autorandr/postswitch)
+# so it runs *after* the display geometry settles - fixes boot-time misalignment.
+exec_always --no-startup-id autorandr --change --force
 # open apps at login
 # for_window [class="obsidian"] move to workspace 6
 exec --no-startup-id i3-msg 'workspace 1; exec $browser; workspace 1'
@@ -281,3 +282,6 @@ for_window [class="gnome-calculator"] floating enable
 ## Screenshots
 bindsym $super+p exec --no-startup-id QT_ENABLE_HIGHDPI_SCALING=0 flameshot gui
 bindsym $super+shift+p exec --no-startup-id flameshot full
+
+# DELL annoying ipu6 camera
+bindsym $mod+c exec camera-toggle

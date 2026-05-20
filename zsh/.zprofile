@@ -18,3 +18,15 @@ function y() {
 
 export TASKING_TRICORE_PATH=/opt/TriCore/ctc/bin
 eval "$(zoxide init zsh)"
+
+# Make ~/.local/{scripts,bin} available to the X session (i3, xss-lock, etc.).
+# Must be exported before `exec startx` below, since that exec replaces this
+# shell and .zshrc (which sources ~/.zsh_profile) is never reached.
+if [[ ":$PATH:" != *":$HOME/.local/scripts:"* ]]; then
+    export PATH="$PATH:$HOME/.local/scripts"
+fi
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+    export PATH="$PATH:$HOME/.local/bin"
+fi
+
+if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then exec startx; fi

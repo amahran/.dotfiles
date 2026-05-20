@@ -1,10 +1,6 @@
 # tmux sessionizer shortcut
-if [[ ":$PATH:" != *":$HOME/.local/scripts:"* ]]; then
-    export PATH="$PATH:$HOME/.local/scripts"
-fi
-if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-    export PATH="$PATH:$HOME/.local/bin"
-fi
+# Note: ~/.local/{scripts,bin} are added to PATH in ~/.zprofile so the X
+# session inherits them; no need to repeat the export here.
 bindkey -s ^f "tmux-sessionizer\n"
 
 # Function to open your TODO directory in vim
@@ -20,3 +16,4 @@ bindkey -s '\ee' "todo\n"
 # use zoxide instead of cd
 alias cd=z
 alias cdi=zi
+alias xclip='xclip -selection clipboard'

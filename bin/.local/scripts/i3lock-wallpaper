@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# i3lock-wallpaper — lock the screen with the wallpaper scaled per-monitor.
+#
+# Plain i3lock can only centre or tile ONE image across the whole X
+# framebuffer, so on a multi-monitor setup the background lands half on
+# each screen and looks misaligned. This builds a framebuffer-sized image
+# with the wallpaper stretched onto each monitor's region (same as
+# `feh --bg-scale`), then hands that 1:1 image to i3lock.
+
+WALLPAPER="${WALLPAPER:-$HOME/wallpaper/wallhaven-3qk1xd.png}"
+OUT="$(mktemp --suffix=.png)" || exec i3lock -n -c 000000 "$@"
+trap 'rm -f "$OUT"' EXIT
+
+# Compose the wallpaper, scaled per-monitor, onto a framebuffer-sized canvas.
+build_bg() {
+    local size
+    size="$(xrandr --current | sed -n 's/.* current \([0-9]\+\) x \([0-9]\+\).*/\1x\2/p')"
+    [ -n "$size" ] || return 1
+    magick -size "$size" xc:black "$OUT" || return 1
+    xrandr --listmonitors | awk 'NR>1 {
+        g = $3                       # e.g. 2560/597x1440/336+0+0
+        sub(/\/[0-9]+x/, "x", g)     # ->  2560x1440/336+0+0
+        sub(/\/[0-9]+\+/, "+", g)    # ->  2560x1440+0+0
+        split(g, a, /[x+]/)
+        print a[1], a[2], a[3], a[4]  # W H X Y
+    }' | while read -r W H X Y; do
+        magick "$OUT" \
+            \( "$WALLPAPER" -resize "${W}x${H}!" \) \
+            -geometry "+${X}+${Y}" -composite "$OUT" || exit 1
+    done
+}
+
+# -n keeps i3lock in the foreground so xss-lock's suspend handling works.
+# If compositing fails for any reason, still lock (solid black) rather than
+# risk suspending with the screen unlocked.
+if build_bg; then
+    i3lock -n -i "$OUT" "$@"
+else
+    i3lock -n -c 000000 "$@"
+fi

@@ -1,0 +1,6 @@
+#!/bin/sh
+# autorandr postswitch hook — runs *after* a monitor profile is applied and
+# the new display geometry has settled. Re-applying the wallpaper here
+# (instead of after a fixed `sleep` in the i3 config) fixes the background
+# being misaligned on a cold boot, when the layout takes longer to settle.
+feh --no-fehbg --bg-scale "$HOME/wallpaper/wallhaven-3qk1xd.png"

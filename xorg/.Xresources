@@ -1,9 +1,8 @@
-Xft.dpi: 120
-
-! These might also be useful depending on your monitor and personal preference:
-Xft.autohint: 0
-Xft.lcdfilter:  lcddefault
-Xft.hintstyle:  hintfull
-Xft.hinting: 1
-Xft.antialias: 1
+!120 works fine on 2k and 4k but need a bit of zooming on 4K
+Xft.dpi: 144
+Xcursor.size: 36
+Xft.antialias: true
+Xft.hinting: true
+Xft.hintstyle: hintslight
 Xft.rgba: rgb
+Xft.lcdfilter: lcddefault
