@@ -11,3 +11,5 @@
 	tool = nvimdiff
 [color]
 	ui = auto
+[push]
+	followTags = true

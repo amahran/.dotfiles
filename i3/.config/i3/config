@@ -43,10 +43,8 @@ exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id dunst
 # start X11 compositor: picom
 exec --no-startup-id picom
-# start up keyring daemon for secure credential storage (required by tools like vscode)
-exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY XAUTHORITY WAYLAND_DISPLAY
-exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets,pkcs11,ssh
-
+exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY XAUTHORITY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP
+exec --no-startup-id systemctl --user start i3-session.target
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -285,3 +283,6 @@ bindsym $super+shift+p exec --no-startup-id flameshot full
 
 # DELL annoying ipu6 camera
 bindsym $mod+c exec camera-toggle
+
+# Insta360 static frame - no annoying cerntering
+bindsym $mod+Shift+c exec --no-startup-id ~/.local/scripts/link2c-static-frame.sh
