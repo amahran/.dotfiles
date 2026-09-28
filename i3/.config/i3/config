@@ -57,6 +57,9 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-wallpaper
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
+# fix a problem with staling xclip after logout/login in tmux
+exec --no-startup-id sh -c 'mkdir -p "$HOME/.cache" && ln -sfn "$XAUTHORITY" "$HOME/.cache/xauth-current"'
+
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
@@ -272,6 +275,7 @@ exec_always --no-startup-id autorandr --change --force
 # for_window [class="obsidian"] move to workspace 6
 exec --no-startup-id i3-msg 'workspace 1; exec $browser; workspace 1'
 exec --no-startup-id i3-msg 'workspace 3; exec $terminal; workspace 1'
+exec --no-startup-id i3-msg 'workspace 4; exec $browser --profile-directory="Default" --app=https://claude.ai; workspace 1'
 # exec --no-startup-id i3-msg 'workspace 6; exec obsidian'
 
 # applications that should always be in floating mode

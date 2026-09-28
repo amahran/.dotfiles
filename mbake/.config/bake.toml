@@ -1,0 +1,44 @@
+# mbake (Makefile formatter) configuration.
+# Resolution order: ./.bake.toml -> ~/.bake.toml -> $XDG_CONFIG_HOME/bake.toml
+# -> ~/.config/bake.toml -> mbake's built-in defaults. Drop a .bake.toml in a
+# project root to override this per-project.
+#
+# Invoked from Neovim via conform (<leader>fm); see nvim's lua/config/lsp.lua.
+
+gnu_error_format = true
+wrap_error_messages = false
+
+[formatter]
+# Spacing
+space_around_assignment = true
+space_before_colon = false
+space_after_colon = true
+
+# Line continuations
+normalize_line_continuations = true
+max_line_length = 120
+
+# Whitespace / newlines
+remove_trailing_whitespace = true
+ensure_final_newline = true
+normalize_empty_lines = true
+max_consecutive_empty_lines = 2
+fix_missing_recipe_tabs = true
+
+# Align the '=' across runs of consecutive assignments.
+align_variable_assignments = true
+align_across_comments = false
+
+# Indent the bodies of nested ifeq/ifdef blocks.
+# NOTE: as of mbake 1.4.6 this suppresses space_around_assignment *inside*
+# conditional bodies, so `CFLAGS+=-g` there is left unspaced. Set to false if
+# you would rather have consistent assignment spacing than indented blocks.
+indent_nested_conditionals = true
+tab_width = 2
+
+# .PHONY rewriting is left off deliberately: in mbake 1.4.6 these emit targets
+# in a non-deterministic order and are not idempotent (each run reshuffles the
+# line and adds a blank line), which churns diffs on every format.
+auto_insert_phony_declarations = false
+group_phony_declarations = false
+phony_at_top = false
