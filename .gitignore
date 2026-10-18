@@ -1,1 +1,5 @@
 tmux/.config/tmux/plugins/
+
+# only encrypted secrets may be committed
+secrets/*
+!secrets/*.age
