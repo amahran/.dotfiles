@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Omarchy post-update hook (runs near the end of `omarchy update`).
+#
+# Omarchy migrations and `omarchy refresh ...` write *through* the stow
+# symlinks, so any config change they make lands as a modification inside
+# ~/.dotfiles. This hook just reports it, so you can review it with
+# `git -C ~/.dotfiles diff` and keep it or `git checkout` it away.
+
+DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
+[[ -d $DOTFILES/.git ]] || exit 0
+
+changes=$(git -C "$DOTFILES" status --porcelain --ignore-submodules=none 2>/dev/null)
+
+# Managed configs that stopped being symlinks into the repo
+broken=()
+for path in .oh-my-zsh/custom/personal.zsh .gitconfig .config/tmux/tmux.conf .config/kitty/kitty.conf \
+            .config/hypr/bindings.lua .config/hypr/monitors.lua .config/hypr/input.lua \
+            .config/hypr/looknfeel.lua .config/hypr/autostart.lua .config/nvim; do
+  # shellcheck disable=SC2088
+  [[ -e $HOME/$path && ! -L $HOME/$path ]] && broken+=("~/$path")
+done
+
+if [[ -z $changes && ${#broken[@]} -eq 0 ]]; then
+  echo "dotfiles: no changes from this update"
+  exit 0
+fi
+
+echo
+echo "dotfiles: this update touched your managed configs"
+[[ -n $changes ]] && { echo "  changed in ~/.dotfiles:"; sed 's/^/    /' <<<"$changes"; }
+((${#broken[@]})) && echo "  no longer symlinked (re-run ~/.dotfiles/stow.sh): ${broken[*]}"
+echo "  review with: git -C ~/.dotfiles diff"
+
+if command -v notify-send >/dev/null; then
+  notify-send -u normal "Dotfiles changed by update" "Review with: git -C ~/.dotfiles diff"
+fi
+exit 0

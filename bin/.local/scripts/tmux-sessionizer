@@ -5,7 +5,8 @@ if [[ $# -eq 1 ]]; then
   selected=$1
 else
   selected=$({
-      fd . ~/ ~/personal --min-depth=1 --max-depth=1 --type d -H -a -E .git -E build 
+      printf "%s\n" "$HOME" "$HOME/personal" "$HOME/work"
+      fd . ~/personal --min-depth=1 --max-depth=1 --type d -H -a -E .git -E build
       fd . ~/work --min-depth=1 --max-depth=3 --type d -H -a -E .git -E build 
   } | fzf)
 fi
