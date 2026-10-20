@@ -67,6 +67,9 @@ base() {
 dev() {
   bold "Development (Neovim toolchain, LSP prerequisites, debugger)"
   pkgs cmake ninja gdb srecord
+
+  # `vi` opens nvim (system-wide, so sudo and other tools get it too)
+  sudo ln -sfn /usr/bin/nvim /usr/local/bin/vi
 }
 
 desktop() {
