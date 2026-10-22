@@ -63,6 +63,10 @@ base() {
   pkgs stow age tree man-pages 7zip \
     otf-monaspace-nerdfonts
 
+  # Build the man page index now; man-db.timer skips itself on battery, which
+  # leaves `man -k` (nvim's <leader>sm) with nothing to search.
+  sudo mandb --quiet
+
   # yazi and its support tools
   pkgs yazi chafa
 }
@@ -77,7 +81,7 @@ dev() {
 
 desktop() {
   bold "Desktop apps"
-  pkgs zathura zathura-pdf-mupdf \
+  pkgs zathura zathura-pdf-mupdf claude-desktop \
     v4l-utils # v4l-utils: for link2c-static-frame.sh (Insta360 Link 2C)
 
   # nordvpn

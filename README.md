@@ -13,6 +13,7 @@ adds what's personal on top.
 | `zsh/ git/ tmux/ kitty/ zathura/ mbake/ bin/ nvim/` | Stow packages for portable configs |
 | `hypr/` | Hyprland overrides (`bindings/monitors/input/looknfeel/autostart.lua`) |
 | `omarchy/` | Omarchy hook that reports config changes after `omarchy update` |
+| `claude-desktop/` | Launch flags for Claude Desktop: points it at GNOME Keyring, which Electron can't detect under Hyprland |
 
 `vim/` (a plain vim config) is kept for machines without nvim but is **not**
 stowed. The old i3/X-era configs are in git history.
