@@ -16,7 +16,7 @@ TASKS=(
   base
   dev
   desktop
-  virt
+  # virt
 
   # --- Configure ---
   ssh_keys          # first, so the repos below can be cloned over SSH
@@ -77,7 +77,7 @@ dev() {
 
 desktop() {
   bold "Desktop apps"
-  pkgs zathura zathura-pdf-mupdf zoom \
+  pkgs zathura zathura-pdf-mupdf \
     v4l-utils # v4l-utils: for link2c-static-frame.sh (Insta360 Link 2C)
 
   # nordvpn
@@ -155,10 +155,6 @@ omarchy() {
 
   # VS Code. Omarchy's installer overwrites settings.json, so only run it once.
   pacman -Qq visual-studio-code-bin &>/dev/null || omarchy-install-editor-vscode
-
-  # Docker without sudo: adds you to the docker group (root-equivalent, asks to
-  # confirm, see README 4.8). The reboot it needs is left for the end.
-  OMARCHY_DEFER_REBOOT=1 omarchy-setup-security-sudoless-docker
 }
 
 # ---------------------------------------------------------------- repos
