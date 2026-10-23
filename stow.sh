@@ -16,7 +16,7 @@ TARGET="${STOW_TARGET:-$HOME}"
 BACKUP="${STOW_BACKUP:-$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)}"
 
 # Packages to be stowed.
-DEFAULT_PACKAGES=(zsh git tmux kitty zathura mbake bin nvim hypr omarchy claude-desktop)
+DEFAULT_PACKAGES=(zsh git ssh tmux kitty zathura mbake bin nvim hypr omarchy claude-desktop)
 
 # Packages whose top-level directory is replaced as a whole (one symlink to the
 # directory) instead of file-by-file.

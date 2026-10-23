@@ -11,7 +11,7 @@ DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Files from ~/.ssh that go into secrets/ssh.tar.age. Work keys and
 # config.d/ belong to the work repo; known_hosts isn't needed.
-SSH_FILES=(config github github.pub)
+SSH_FILES=(github github.pub)
 
 die() { printf '\033[31m%s\033[0m\n' "$*" >&2; exit 1; }
 

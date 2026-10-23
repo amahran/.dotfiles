@@ -109,10 +109,11 @@ virt() {
 
 ssh_keys() {
   bold "SSH keys"
-  # secrets/ssh.tar.age holds .ssh/ (see README, Secrets). Existing files are kept.
+  # secrets/ssh.tar.age holds the keys (see README, Secrets). Existing files are
+  # kept.
   local f="$DOTFILES/secrets/ssh.tar.age"
+  install -d -m 700 "$HOME/.ssh"
   if [[ -f $f ]]; then
-    install -d -m 700 "$HOME/.ssh"
     age -d "$f" | tar -C "$HOME" -x --skip-old-files
   else
     echo "  skipped: secrets/ssh.tar.age not found"

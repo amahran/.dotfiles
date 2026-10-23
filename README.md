@@ -54,8 +54,9 @@ in the `TASKS` list at the top of `bootstrap.sh`, in order:
 - **Install tools and apps** — `tools_base`, `tools_dev`, `tools_desktop`,
   `tools_virt`, `tools_nordvpn`, `tools_smartcard` (these three also enable
   their services and groups).
-- **Configure** — `ssh_keys` (decrypts `secrets/ssh.tar.age` into
-  `~/.ssh`), `oh_my_zsh` (see 4.9), `dotfiles` (nvim submodule + `stow.sh`, which
+- **Configure** — `ssh_keys` (decrypts the keys in `secrets/ssh.tar.age` into
+  `~/.ssh`; `~/.ssh/config` itself is stowed from `ssh/`), `oh_my_zsh` (see
+  4.9), `dotfiles` (nvim submodule + `stow.sh`, which
   moves Omarchy's versions of the same files to `~/.dotfiles-backup/<timestamp>/`;
   preview with `./stow.sh --check`), `omarchy` (everything done through
   Omarchy's own commands: Chrome, kitty, VS Code, sudoless Docker). Existing
@@ -192,8 +193,9 @@ Create or update the archive (e.g. after rotating a key) with:
 ```
 
 It packs the files listed in `SSH_FILES` at the top of `encrypt.sh`
-(`~/.ssh/config`, `github`, `github.pub`) into `secrets/ssh.tar.age`. Commit
-the new file afterwards.
+(`~/.ssh/github`, `github.pub`) into `secrets/ssh.tar.age`. Commit
+the new file afterwards. `~/.ssh/config` isn't secret: it's a normal stowed
+file in `ssh/.ssh/config`, so edit it and commit like any other config.
 
 `./bootstrap.sh ssh_keys` decrypts it again (asking for the passphrase); if
 the file is missing, the task is skipped. Work secrets belong in the private
