@@ -92,6 +92,10 @@ desktop() {
   # Smartcard readers (German eAT / Croatian eOI)
   pkgs pcsclite ccid
   sudo systemctl enable --now pcscd.socket
+
+  # Scanning (Brother MFC-L2860DWE over the network). NAPS2 has its own eSCL
+  # driver; sane-airscan makes the scanner show up under its SANE driver too.
+  pkgs naps2-bin sane-airscan
 }
 
 virt() {
