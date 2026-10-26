@@ -59,7 +59,10 @@ in the `TASKS` list at the top of `bootstrap.sh`, in order:
   4.9), `dotfiles` (nvim submodule + `stow.sh`, which
   moves Omarchy's versions of the same files to `~/.dotfiles-backup/<timestamp>/`;
   preview with `./stow.sh --check`), `omarchy` (everything done through
-  Omarchy's own commands: Chrome, kitty, VS Code, sudoless Docker). Existing
+  Omarchy's own commands: Chrome, kitty, VS Code, sudoless Docker),
+  `locale_setup` (keeps English but uses en_GB for dates, paper size and
+  units: dd/mm/yyyy, A4, metric; print dialogs otherwise default to US
+  Letter). Existing
   SSH files are never overwritten.
 - **Clone repos** — `repos_personal`.
 - **Work** — `work` clones the private repo set in `WORK_REPO` to

@@ -23,6 +23,7 @@ TASKS=(
   zsh_setup         # before dotfiles, which links into ~/.oh-my-zsh/custom
   dotfiles
   omarchy           # everything that calls omarchy-* commands
+  locale_setup
 
   # --- Clone repos ---
   repos_personal
@@ -106,6 +107,21 @@ virt() {
 }
 
 # ---------------------------------------------------------------- configure
+
+locale_setup() {
+  bold "Locale (English, UK dates, A4, metric)"
+  # en_US has US Letter paper, which GTK print dialogs default to over the
+  # printer's own A4. en_GB: dd/mm/yyyy with English names, A4, metric.
+  if ! locale -a | grep -qx en_GB.utf8; then
+    sudo sed -i 's/^#en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/' /etc/locale.gen
+    sudo locale-gen
+  fi
+  # Replaces /etc/locale.conf, so LANG has to be repeated. Takes effect at the
+  # next login.
+  sudo localectl set-locale LANG=en_US.UTF-8 \
+    LC_TIME=en_GB.UTF-8 LC_PAPER=en_GB.UTF-8 LC_MEASUREMENT=en_GB.UTF-8
+  echo "  set dates, paper and units to en_GB"
+}
 
 ssh_keys() {
   bold "SSH keys"
