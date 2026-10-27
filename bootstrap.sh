@@ -24,6 +24,7 @@ TASKS=(
   dotfiles
   omarchy           # everything that calls omarchy-* commands
   locale_setup
+  system_files      # copies system/ into /etc
 
   # --- Clone repos ---
   repos_personal
@@ -121,6 +122,24 @@ locale_setup() {
   sudo localectl set-locale LANG=en_US.UTF-8 \
     LC_TIME=en_GB.UTF-8 LC_PAPER=en_GB.UTF-8 LC_MEASUREMENT=en_GB.UTF-8
   echo "  set dates, paper and units to en_GB"
+}
+
+# System config files. system/ mirrors /, and each file is copied (not linked)
+# to the same path, since stow only links into ~.
+system_files() {
+  bold "System config files"
+  local src dst
+  while IFS= read -r -d '' src; do
+    dst="/${src#"$DOTFILES/system/"}"
+    if sudo cmp -s "$src" "$dst"; then
+      echo "  ok      $dst"
+    else
+      sudo install -D -m 644 "$src" "$dst"
+      echo "  copied  $dst"
+    fi
+  done < <(find "$DOTFILES/system" -type f -print0)
+  # logind.conf.d changes take effect at the next boot (restarting logind
+  # would end the session).
 }
 
 ssh_keys() {

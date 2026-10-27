@@ -14,6 +14,7 @@ adds what's personal on top.
 | `hypr/` | Hyprland overrides (`bindings/monitors/input/looknfeel/autostart.lua`) |
 | `omarchy/` | Omarchy hook that reports config changes after `omarchy update` |
 | `claude-desktop/` | Launch flags for Claude Desktop: points it at GNOME Keyring, which Electron can't detect under Hyprland |
+| `system/` | Files for outside `~`, mirroring `/`. The `system_files` task copies them with sudo (not stowed) |
 
 `vim/` (a plain vim config) is kept for machines without nvim but is **not**
 stowed. The old i3/X-era configs are in git history.
@@ -62,7 +63,10 @@ in the `TASKS` list at the top of `bootstrap.sh`, in order:
   Omarchy's own commands: Chrome, kitty, VS Code, sudoless Docker),
   `locale_setup` (keeps English but uses en_GB for dates, paper size and
   units: dd/mm/yyyy, A4, metric; print dialogs otherwise default to US
-  Letter). Existing
+  Letter), `system_files` (copies `system/` into `/`; today that's a
+  logind drop-in so closing the lid on AC power doesn't suspend: docked, the
+  lock screen turns the monitor off, logind then sees no external display and
+  suspended the laptop, dropping the VPN). Existing
   SSH files are never overwritten.
 - **Clone repos** — `repos_personal`.
 - **Work** — `work` clones the private repo set in `WORK_REPO` to
@@ -178,7 +182,8 @@ Update oh-my-zsh with `omz update`.
   and run that task, e.g. `./bootstrap.sh tools_dev`.
 - **Add a config:** put it in a stow package folder (mirroring its path under
   `~`), add the package to `DEFAULT_PACKAGES` in `stow.sh` if it's new, run
-  `./bootstrap.sh dotfiles`.
+  `./bootstrap.sh dotfiles`. For a file outside `~` (e.g. in `/etc`), put it
+  under `system/` at its full path and run `./bootstrap.sh system_files`.
 - **Never edit** `/usr/share/omarchy`. It belongs to the Omarchy package and is
   replaced on update.
 
