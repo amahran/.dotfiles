@@ -10,7 +10,7 @@ adds what's personal on top.
 | `bootstrap.sh` | One-command setup: a list of tasks (install, configure, clone repos) |
 | `encrypt.sh` | Re-encrypts `secrets/` from the live files after you change or rotate keys |
 | `stow.sh` | Links the configs into `~` with GNU Stow, backing up whatever is in the way |
-| `zsh/ git/ tmux/ kitty/ zathura/ mbake/ bin/ nvim/` | Stow packages for portable configs |
+| `zsh/ git/ tmux/ kitty/ yazi/ zathura/ mbake/ bin/ nvim/` | Stow packages for portable configs |
 | `hypr/` | Hyprland overrides (`bindings/monitors/input/looknfeel/autostart.lua`) |
 | `omarchy/` | Omarchy hook that reports config changes after `omarchy update` |
 | `claude-desktop/` | Launch flags for Claude Desktop: points it at GNOME Keyring, which Electron can't detect under Hyprland |

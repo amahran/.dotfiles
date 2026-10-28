@@ -1,0 +1,7 @@
+# Swap yazi's default q/Q: with the `y` shell wrapper, q leaves you where you
+# started and Q cds into the directory yazi was showing.
+[mgr]
+prepend_keymap = [
+  { on = "q", run = "quit --no-cwd-file", desc = "Quit without changing directory" },
+  { on = "Q", run = "quit", desc = "Quit and cd into the current directory" },
+]
