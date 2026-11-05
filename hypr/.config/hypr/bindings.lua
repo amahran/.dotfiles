@@ -41,5 +41,5 @@ o.bind("SUPER + ALT + T", "Extract text (OCR) from screenshot", "omarchy-capture
 o.bind("ALT + SHIFT + C", "Webcam static frame", os.getenv("HOME") .. "/.local/scripts/link2c-static-frame.sh")
 
 -- Quick notes (window rules in looknfeel.lua) ---------------------------------
-o.bind("SUPER + ALT + N", "Quick capture", "kitty --class=local.capture " .. os.getenv("HOME") .. "/.local/scripts/capture")
-o.bind("SUPER + ALT + I", "Open inbox", "kitty --class=local.inbox nvim " .. os.getenv("HOME") .. "/notes/inbox.md")
+o.bind("SUPER + ALT + N", "Quick capture", "ghostty --class=local.capture -e " .. os.getenv("HOME") .. "/.local/scripts/capture")
+o.bind("SUPER + ALT + I", "Open inbox", "ghostty --class=local.inbox -e nvim " .. os.getenv("HOME") .. "/notes/inbox.md")

@@ -10,7 +10,7 @@ adds what's personal on top.
 | `bootstrap.sh` | One-command setup: a list of tasks (install, configure, clone repos) |
 | `encrypt.sh` | Re-encrypts `secrets/` from the live files after you change or rotate keys |
 | `stow.sh` | Links the configs into `~` with GNU Stow, backing up whatever is in the way |
-| `zsh/ git/ tmux/ kitty/ yazi/ zathura/ mbake/ bin/ nvim/` | Stow packages for portable configs |
+| `zsh/ git/ tmux/ ghostty/ yazi/ zathura/ mbake/ bin/ nvim/` | Stow packages for portable configs |
 | `hypr/` | Hyprland overrides (`bindings/monitors/input/looknfeel/autostart.lua`) |
 | `omarchy/` | Omarchy hook that reports config changes after `omarchy update` |
 | `claude-desktop/` | Launch flags for Claude Desktop: points it at GNOME Keyring, which Electron can't detect under Hyprland |
@@ -60,7 +60,7 @@ in the `TASKS` list at the top of `bootstrap.sh`, in order:
   4.9), `dotfiles` (nvim submodule + `stow.sh`, which
   moves Omarchy's versions of the same files to `~/.dotfiles-backup/<timestamp>/`;
   preview with `./stow.sh --check`), `omarchy` (everything done through
-  Omarchy's own commands: Chrome, kitty, VS Code, sudoless Docker),
+  Omarchy's own commands: Chrome, Ghostty, VS Code, sudoless Docker),
   `locale_setup` (keeps English but uses en_GB for dates, paper size and
   units: dd/mm/yyyy, A4, metric; print dialogs otherwise default to US
   Letter), `system_files` (copies `system/` into `/`; today that's a
@@ -125,7 +125,7 @@ Omarchy keys these replace moved to:
 | Toggle window transparency | `Super + Backspace` | `Super + Alt + Backspace` |
 
 Lock stays on Omarchy's `Super + Ctrl + L`. `autostart.lua` opens Chrome on
-workspace 1, kitty on 3 and the Claude web app on 4 at login.
+workspace 1, Ghostty on 3 and the Claude web app on 4 at login.
 
 **Monitors:** dock the laptop, run `hyprctl monitors`, and check that the
 external screen is named `DP-4`, `DP-5` or `DP-6` as in

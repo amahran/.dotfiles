@@ -1,0 +1,44 @@
+# Ghostty has no system-wide config (no /etc/xdg/ghostty), so nothing
+# from Omarchy loads before this file. The Omarchy defaults worth keeping are
+# copied in below (from $OMARCHY_PATH/config/ghostty/config).
+# Shell: Ghostty starts $SHELL (zsh, set by bootstrap.sh), so no `command` line.
+# Reload with ctrl+shift+comma, or `omarchy restart terminal`.
+
+# Theme: built-in Rosé Pine (list them with `ghostty +list-themes`).
+theme = Rose Pine
+# To follow Omarchy's theme switcher instead, replace the line above with:
+# config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
+
+# Font (find names with: ghostty +list-fonts | grep -i monaspace)
+font-family = "Monaspace Argon NF"
+font-size = 12
+
+# Window
+window-theme = ghostty
+window-padding-x = 14
+window-padding-y = 14
+confirm-close-surface = false
+resize-overlay = never
+gtk-toolbar-style = flat
+
+# Cursor
+cursor-style = block
+cursor-style-blink = false
+
+# All shell integration options must be passed together.
+shell-integration-features = no-cursor,ssh-env
+
+# Keyboard bindings
+# Send Shift+Enter as CSI-u so TUIs can distinguish it from Enter.
+keybind = shift+enter=csi:13;2u
+# Legacy encoding sends Alt+Shift+Enter the same as Alt+Enter; send CSI-u so tmux can match M-S-Enter.
+keybind = alt+shift+enter=csi:13;4u
+
+# Pass ctrl+shift+j through to tmux (resize pane down) instead of Ghostty's
+# write_screen_file:paste. ctrl+shift+h/k/l are unbound by default.
+keybind = ctrl+shift+j=unbind
+
+mouse-scroll-multiplier = 0.95
+
+# Fix general slowness on Hyprland (https://github.com/ghostty-org/ghostty/discussions/3224)
+async-backend = epoll

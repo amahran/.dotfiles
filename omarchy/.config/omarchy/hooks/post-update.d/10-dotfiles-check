@@ -13,7 +13,7 @@ changes=$(git -C "$DOTFILES" status --porcelain --ignore-submodules=none 2>/dev/
 
 # Managed configs that stopped being symlinks into the repo
 broken=()
-for path in .oh-my-zsh/custom/personal.zsh .gitconfig .config/tmux/tmux.conf .config/kitty/kitty.conf \
+for path in .oh-my-zsh/custom/personal.zsh .gitconfig .config/tmux/tmux.conf .config/ghostty/config \
             .config/hypr/bindings.lua .config/hypr/monitors.lua .config/hypr/input.lua \
             .config/hypr/looknfeel.lua .config/hypr/autostart.lua .config/nvim; do
   # shellcheck disable=SC2088

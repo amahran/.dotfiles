@@ -57,7 +57,7 @@ clone() {
 
 # already shipped with Omarchy:
 # git curl unzip ripgrep fd fzf bat jq tldr zoxide man-db wl-clipboard
-# tmux kitty base-devel neovim tree-sitter-cli
+# tmux base-devel neovim tree-sitter-cli
 # docker docker-compose docker-buildx
 # sudo systemctl enable --now docker.socket
 base() {
@@ -194,8 +194,8 @@ omarchy() {
   # Chrome
   pacman -Qq google-chrome &>/dev/null || omarchy-install-browser chrome
   omarchy-default-browser chrome
-  # kitty as the terminal. After `dotfiles`, so the stowed kitty.conf is kept.
-  omarchy-install-terminal kitty
+  # Ghostty as the terminal. After `dotfiles`, so the stowed ghostty config is kept.
+  omarchy-install-terminal ghostty
 
   # VS Code. Omarchy's installer overwrites settings.json, so only run it once.
   pacman -Qq visual-studio-code-bin &>/dev/null || omarchy-install-editor-vscode
