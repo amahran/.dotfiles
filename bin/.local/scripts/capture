@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Quick capture: type a thought, Enter. Type several in a row; empty Enter closes.
+inbox="$HOME/notes/inbox.md"
+mkdir -p "$(dirname "$inbox")"
+
+while read -e -r -p "› " thought && [[ -n "$thought" ]]; do
+  printf -- '- [ ] %s  _(%s)_\n' "$thought" "$(date '+%a %d %b %H:%M')" >> "$inbox"
+done
