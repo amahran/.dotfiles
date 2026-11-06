@@ -33,7 +33,8 @@ hl.monitor({ output = "eDP-1", mode = "preferred", position = "auto-left", scale
 -- (or the `description:` line of plain `hyprctl monitors`) into the table
 -- below with the scale you want. Changes apply on save.
 local known_monitors = {
-	["Dell Inc. DELL U2724D F5BS4Z3"] = 1.25, -- 27" 1440p, home desk
+	["Dell Inc. DELL U2724D F5BS4Z3"] = 1.25, -- 27" 1440p
+    ["Acer Technologies XB323QK"] = 1.5, -- 32" 2160p
 }
 
 for description, scale in pairs(known_monitors) do
