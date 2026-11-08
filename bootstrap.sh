@@ -23,6 +23,7 @@ TASKS=(
   zsh_setup         # before dotfiles, which links into ~/.oh-my-zsh/custom
   dotfiles
   omarchy           # everything that calls omarchy-* commands
+  croatian_eid      # after omarchy, which installs Chrome
   locale_setup
   system_files      # copies system/ into /etc
 
@@ -92,7 +93,8 @@ desktop() {
   sudo usermod -aG nordvpn "$USER"
 
   # Smartcard readers (German eAT / Croatian eOI)
-  pkgs pcsclite ccid
+  # (pcsc_scan from pcsc-tools shows the reader and whether a card is in it)
+  pkgs pcsclite ccid pcsc-tools
   sudo systemctl enable --now pcscd.socket
 
   # Scanning (Brother MFC-L2860DWE over the network). NAPS2 has its own eSCL
@@ -122,6 +124,50 @@ locale_setup() {
   sudo localectl set-locale LANG=en_US.UTF-8 \
     LC_TIME=en_GB.UTF-8 LC_PAPER=en_GB.UTF-8 LC_MEASUREMENT=en_GB.UTF-8
   echo "  set dates, paper and units to en_GB"
+}
+
+# Croatian eID card (eOI), for e-Građani and other logins through idp.akd.hr.
+# AKD only ships an Ubuntu .deb, so pkgbuilds/certilia-middleware repackages it.
+# Chrome and Chromium need its PKCS#11 library; without it the site says no
+# valid certificate was chosen. Loaded into Chrome directly, though, the library
+# crashes Chrome whenever the card is removed or loses contact. So the p11-kit
+# user server loads it (drop-in in eid/), and Chrome gets p11-kit's client
+# module, which reaches the card over a socket. Insert the card before starting
+# Chrome: if Chrome starts without it, restart Chrome once the card is in.
+croatian_eid() {
+  bold "Croatian eID (eOI)"
+  local dir="$DOTFILES/pkgbuilds/certilia-middleware" want
+  want="$(source "$dir/PKGBUILD" && echo "$pkgver-$pkgrel")"
+  if [[ $(pacman -Q certilia-middleware 2>/dev/null) == "certilia-middleware $want" ]]; then
+    echo "  ok      certilia-middleware $want"
+  else
+    (cd "$dir" && makepkg -sic --noconfirm)
+  fi
+
+  "$DOTFILES/stow.sh" eid
+  systemctl --user daemon-reload
+  systemctl --user enable p11-kit-server.socket
+  # Restart to pick up a changed drop-in. The server deletes the socket file
+  # when it stops, so the socket unit is restarted after it to bring it back.
+  systemctl --user stop p11-kit-server.service
+  systemctl --user restart p11-kit-server.socket
+
+  local nssdb="$HOME/.pki/nssdb" lib=/usr/lib/pkcs11/p11-kit-client.so
+  if [[ ! -f $nssdb/cert9.db ]]; then
+    install -d -m 700 "$nssdb"
+    certutil -N -d "sql:$nssdb" --empty-password
+  fi
+  # An earlier version of this task loaded the Certilia library into Chrome.
+  if modutil -dbdir "sql:$nssdb" -list | grep -q "library name: /opt/certiliamiddleware/"; then
+    modutil -dbdir "sql:$nssdb" -force -delete "Certilia eOI"
+  fi
+  if modutil -dbdir "sql:$nssdb" -list | grep -q "library name: $lib"; then
+    echo "  ok      registered in ~/.pki/nssdb"
+  else
+    # FRIENDLY: Chrome can list the card's certificates before asking for the PIN.
+    modutil -dbdir "sql:$nssdb" -force -add "Certilia eOI (p11-kit)" -libfile "$lib" -mechanisms FRIENDLY
+    echo "  registered in ~/.pki/nssdb (restart Chrome)"
+  fi
 }
 
 # System config files. system/ mirrors /, and each file is copied (not linked)

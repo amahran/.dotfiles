@@ -15,6 +15,8 @@ adds what's personal on top.
 | `omarchy/` | Omarchy hook that reports config changes after `omarchy update` |
 | `claude-desktop/` | Launch flags for Claude Desktop: points it at GNOME Keyring, which Electron can't detect under Hyprland |
 | `system/` | Files for outside `~`, mirroring `/`. The `system_files` task copies them with sudo (not stowed) |
+| `pkgbuilds/` | Local Arch packages for software that's not in the repos or AUR (today: AKD's Croatian eID middleware) |
+| `eid/` | Stow package for the Croatian eID: a p11-kit server drop-in that hosts the card library outside Chrome. Stowed by the `croatian_eid` task, not by `stow.sh` |
 
 `vim/` (a plain vim config) is kept for machines without nvim but is **not**
 stowed. The old i3/X-era configs are in git history.
@@ -61,7 +63,9 @@ in the `TASKS` list at the top of `bootstrap.sh`, in order:
   moves Omarchy's versions of the same files to `~/.dotfiles-backup/<timestamp>/`;
   preview with `./stow.sh --check`), `omarchy` (everything done through
   Omarchy's own commands: Chrome, Ghostty, VS Code, sudoless Docker),
-  `locale_setup` (keeps English but uses en_GB for dates, paper size and
+  `croatian_eid` (builds `pkgbuilds/certilia-middleware`, runs its PKCS#11
+  library in the p11-kit user server, and registers p11-kit's client module in
+  Chrome's `~/.pki/nssdb`; see 4.7), `locale_setup` (keeps English but uses en_GB for dates, paper size and
   units: dd/mm/yyyy, A4, metric; print dialogs otherwise default to US
   Letter), `system_files` (copies `system/` into `/`; today that's a
   logind drop-in so closing the lid on AC power doesn't suspend: docked, the
@@ -145,8 +149,21 @@ nordvpn login
 ```
 
 ### 4.7 Smartcard readers
-`pcscd` is enabled. Plug in the reader and check it with `pcsc_scan`
-(package `pcsc-tools`). Install AusweisApp if you need the German eID.
+`pcscd` is enabled. Plug in the reader (or use the laptop's built-in slot) and
+check it with `pcsc_scan`. Install AusweisApp if you need the German eID.
+
+**Croatian eID (eOI):** after `./bootstrap.sh croatian_eid`, insert the card,
+then start Chrome, and log in at e-Građani; Chrome asks you to pick the
+Identification certificate, then for its PIN. Chrome only sees the card if it
+was in the reader when Chrome started, so restart Chrome if you inserted it
+later. The card library runs in `p11-kit-server.service`, not in Chrome,
+because it crashes whatever process hosts it when the card is removed (check
+with `journalctl --user -u p11-kit-server`). Certilia Client (in the app
+launcher) shows the card and its certificates and changes PINs. If the site still
+says no valid certificate was chosen, the card's certificates may not be
+activated or may be suspended or revoked: check them in the eOI portal
+(eoi.akd.hr). To update the middleware, see the comment at the top of
+`pkgbuilds/certilia-middleware/PKGBUILD`.
 
 ### 4.8 Optional
 - **Docker without sudo:** Omarchy deliberately keeps you out of the `docker`

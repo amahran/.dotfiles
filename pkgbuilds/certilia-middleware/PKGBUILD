@@ -1,0 +1,31 @@
+# Croatian eID (eOI) middleware from AKD, repackaged from its Ubuntu .deb.
+# Provides the PKCS#11 library browsers need to read the card's certificates,
+# plus Certilia Client (card/PIN management) and Certilia Signer (web signing).
+#
+# New version: check https://www.certilia.com/preuzimanja/, bump pkgver, then
+# run `updpkgsums` here. The `croatian_eid` task in bootstrap.sh builds it.
+
+pkgname=certilia-middleware
+pkgver=3.9.13
+pkgrel=1
+_debrel=1
+pkgdesc="AKD Certilia Middleware for the Croatian eID card (eOI)"
+arch=('x86_64')
+url="https://www.certilia.com/preuzimanja/"
+license=('LicenseRef-Certilia')
+depends=('pcsclite' 'ccid' 'pcre2' 'xcb-util-cursor')
+options=('!strip' '!debug')
+source=("https://www.certilia.com/update/certiliamiddleware_${pkgver}-${_debrel}_amd64.deb")
+sha256sums=('89de3c60dd20a22fdbcfa0da88d5b5c6fb7e07979a953dae15c112e8ca6ede2f')
+
+package() {
+  bsdtar -xf data.tar.zst -C "$pkgdir"
+
+  # Debian-only: the APT repo/key, and CA links meant for update-ca-certificates.
+  # The browser doesn't need AKD's CAs to log in with the card, and the bundle
+  # includes AKD's TEST roots, which shouldn't go into the system trust store.
+  rm -rf "$pkgdir/etc/apt" "$pkgdir/usr/share/keyrings" "$pkgdir/usr/share/ca-certificates"
+
+  install -d "$pkgdir/usr/share/licenses/$pkgname"
+  ln -s /opt/certiliamiddleware/licenses/MiddlewareLicense "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
